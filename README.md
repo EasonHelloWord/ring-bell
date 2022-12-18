@@ -15,7 +15,7 @@ main
 >>start.wav  
 >>eye.wav 
 > 
->main.exe  
+>ring-bell.exe  
 
 检查音频设备：您可以在cmd或PowerShell窗口下依次输入
 ```
