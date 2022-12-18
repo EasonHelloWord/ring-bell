@@ -16,6 +16,7 @@ def seeforclass(start,end,eye,de):
             play('data/end.wav',de)
         if time.strftime('%H:%M:%S',time.localtime(time.time())) in eye:
             play('data/eye.wav',de)
+        time.sleep(0.1)
 
 def seeforme(start,end,eye,de):
     while True:
@@ -25,6 +26,7 @@ def seeforme(start,end,eye,de):
             play('data/end.wav',de)
         if time.strftime('%H:%M:%S',time.localtime(time.time())) in eye:
             play('data/eye.wav',de)
+        time.sleep(0.1)
 
 
 
