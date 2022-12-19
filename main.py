@@ -2,8 +2,15 @@ import sounddevice
 import soundfile
 import time
 import threading
-import os,json
+import os,json,sys
 def play(files,de):
+    print(time.strftime("[%Y-%m-%d %H:%M:%S]",time.localtime(time.time())),end="")
+    if files == "data/start.wav":
+        print(f'{de}:播放上课铃')
+    if files == "data/end.wav":
+        print(f'{de}:播放下课铃')
+    if files == "data/eye.wav":
+        print(f'{de}:播放眼保健操铃声')
     array, smp_rt = soundfile.read(files, dtype = 'float32') 
     sounddevice.play(array,smp_rt,device=de)
     sounddevice.wait()
@@ -29,7 +36,6 @@ def seeforme(start,end,eye,de):
         time.sleep(0.1)
 
 
-
 if __name__ =='__main__':
     if not os.path.exists('config.json'):#生成
         basic = {'start':['07:59:03','08:59:03','10:19:03',"12:59:03","13:59:03","14:59:03","15:59:03"],
@@ -47,7 +53,27 @@ if __name__ =='__main__':
     eye = data['eye']
     de_class = data["de_class"]
     de_me=data['de_me']
-    thread1 = threading.Thread(name='t1',target=seeforclass,args=[start,end,eye,de_class])
-    thread2 = threading.Thread(name='t2',target=seeforme,args=[start,end,eye,de_me])
-    thread1.start()
-    thread2.start()
+    t1 = threading.Thread(name='t1',target=seeforclass,args=[start,end,eye,de_class],daemon=True)
+    t2 = threading.Thread(name='t2',target=seeforme,args=[start,end,eye,de_me],daemon=True)
+    t1.start()
+    t2.start()
+    while True:
+        a = input("1:关闭铃声，2:播放上课铃，3：播放下课铃，4：播放眼保健操铃声\n")
+        if a == "1":
+            python = sys.executable
+            os.execl(python, python, *sys.argv)
+        if a == "2":
+            t3=threading.Thread(name='t3',target=play,args=['data/start.wav',de_class],daemon=True)
+            t4=threading.Thread(name='t4',target=play,args=['data/start.wav',de_me],daemon=True)
+            t3.start()
+            t4.start()
+        if a == "3":
+            t5=threading.Thread(name='t5',target=play,args=['data/end.wav',de_class],daemon=True)
+            t6=threading.Thread(name='t6',target=play,args=['data/end.wav',de_me],daemon=True)
+            t5.start()
+            t6.start()
+        if a == "4":
+            t7=threading.Thread(name='t7',target=play,args=['data/eye.wav',de_class],daemon=True)
+            t8=threading.Thread(name='t8',target=play,args=['data/eye.wav',de_me],daemon=True)
+            t7.start()
+            t8.start()
